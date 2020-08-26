@@ -26,4 +26,7 @@
 =======
 /.vs/BookStores/v16
 /BlazorServerApp/.vs/BlazorApp/v16
+<<<<<<< HEAD
+>>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware
+=======
 >>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware

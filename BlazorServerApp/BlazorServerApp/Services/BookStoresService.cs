@@ -43,11 +43,14 @@ namespace BlazorServerApp.Services
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
 <<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Services/BookStoresService.cs
+<<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Services/BookStoresService.cs
 
             var token = await _localStorageService.GetItemAsync<string>("accessToken");
             requestMessage.Headers.Authorization
                 = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
+=======
+>>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware:BlazorServerApp/BlazorApp/BlazorApp/Services/BookStoresService.cs
 =======
 >>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware:BlazorServerApp/BlazorApp/BlazorApp/Services/BookStoresService.cs
             var response = await _httpClient.SendAsync(requestMessage);
