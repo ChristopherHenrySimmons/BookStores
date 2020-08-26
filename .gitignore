@@ -2,6 +2,7 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
+<<<<<<< HEAD
 **/.vs/
 **/BlazorServerApp/.vs/
 **/BlazorServerApp/BlazorServerApp/bin
@@ -22,3 +23,7 @@
 
 **/Publish/
 /BlazorServerApp/BlazorServerApp/Properties/
+=======
+/.vs/BookStores/v16
+/BlazorServerApp/.vs/BlazorApp/v16
+>>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware

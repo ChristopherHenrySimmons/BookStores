@@ -1,0 +1,152 @@
+﻿@page "/publishers"
+@using BlazorServerApp.Data;
+@using CuriousDriveRazorLibrary
+@using BlazorServerApp.Services
+@inject IBookStoresService<Publisher> bookStoresService
+@inject IJSRuntime JSRuntime
+
+<div class="col-12">
+    <h3><b>Enter Publisher Information</b></h3>
+    <hr />
+    <ServerValidations IsVisible="IsVisible" Result="Result">
+        @RecordName
+    </ServerValidations>
+
+    <EditForm Model="@publisher" OnValidSubmit="@SavePublisher">
+        @*<DataAnnotationsValidator />*@
+        <div class="col-12 row">
+            <label class="col-2 font-weight-bold">first name :</label>
+            <input @ref="publisherNameTextBox" class="form-control col-3" @bind="publisher.PublisherName" placeholder="publisher's name" />
+            &nbsp;<ValidationMessage For="@(() => publisher.PublisherName)" />
+        </div>
+        <br />
+        <div class="col-12 row">
+            <label class="col-2 font-weight-bold">city :</label>
+            <SelectCity></SelectCity>
+        </div>
+        <br />
+        <div class="col-12 row">
+            <span class="col-2"></span>
+            <input type="submit" class="form-control col-1 btn btn-primary" value="Save" />
+            <span>&nbsp;</span>
+            <input type="submit" class="form-control col-1 btn btn-primary" value="Clear" />
+        </div>
+
+    </EditForm>
+
+</div>
+<br />
+<div class="col-6">
+    <h3><b>Publishers</b></h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>PublisherId</th>
+                <th>Publisher Name</th>
+                <th>City</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (publisherList != null)
+            {
+                @foreach (var publisher in publisherList)
+                {
+                    <tr>
+                        <td>@publisher.PubId</td>
+                        <td>@publisher.PublisherName</td>
+                        <td>@publisher.City</td>
+                        <th>
+                            <a style="text-underline-position:below; cursor:pointer; color:blue" @onclick="(()=> EditPublisher(publisher))">Edit</a> |
+                            <a style="text-underline-position:below; cursor:pointer; color:blue" @onclick="(()=> DeletePublisher(publisher.PubId))">Delete</a>
+                        </th>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @*<MatTable Items="@publisherList" Striped="true" AllowSelection="true"
+                  RowClass="tester" class="mat-elevation-z5">
+            <MatTableHeader>
+                <th>PublisherId</th>
+                <th>Publisher Name</th>
+                <th>City</th>
+            </MatTableHeader>
+            <MatTableRow>
+                <td>@context.Pub_Id</td>
+                <td>@context.Publisher_Name</td>
+                <td>@context.City</td>
+            </MatTableRow>
+        </MatTable>*@
+
+</div>
+
+@code {
+
+    public Publisher publisher { get; set; }
+    public List<Publisher> publisherList { get; set; }
+    public string[] Cities { get; set; }
+    ElementReference publisherNameTextBox;
+
+    public bool IsVisible { get; set; }
+    public bool Result { get; set; }
+    public string RecordName { get; set; }
+
+    protected override void OnInitialized()
+    {
+        publisher = new Publisher();
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+            await LoadPublishers();
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task LoadPublishers()
+    {
+        publisherList = await bookStoresService.GetAllAsync("publishers/");
+        publisherList = publisherList.OrderByDescending(auth => auth.PubId).ToList();
+
+        StateHasChanged();
+    }
+
+    private async Task SavePublisher()
+    {
+        if (publisher.PubId == 0)
+            await bookStoresService.SaveAsync("publishers/", publisher);
+        else
+            await bookStoresService.UpdateAsync("publishers/", publisher.PubId, publisher);
+
+        await LoadPublishers();
+
+        Result = true;
+        IsVisible = true;
+
+        var publisherName = publisher.PublisherName;
+
+        RecordName = publisherName;
+
+        publisher = new Publisher();
+
+        //await JSRuntime.InvokeVoidAsync("saveMessage", firstName, lastName);
+        await JSRuntime.InvokeVoidAsync("setFocusOnElement", publisherNameTextBox);
+    }
+
+    private async Task DeletePublisher(int pubId)
+    {
+        await bookStoresService.DeleteAsync("publishers/", pubId);
+
+        await LoadPublishers();
+
+        //throw new Exception("DeleteAuthor");
+    }
+
+    private void EditPublisher(Publisher argPublisher)
+    {
+        publisher = argPublisher;
+    }
+}

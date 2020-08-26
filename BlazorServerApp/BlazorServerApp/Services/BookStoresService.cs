@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using Blazored.LocalStorage;
 
 namespace BlazorServerApp.Services
 {
@@ -14,14 +13,10 @@ namespace BlazorServerApp.Services
     {
         public HttpClient _httpClient { get; }
         public AppSettings _appSettings { get; }
-        public ILocalStorageService _localStorageService { get; }
 
-        public BookStoresService(HttpClient httpClient
-            , IOptions<AppSettings> appSettings
-            , ILocalStorageService localStorageService)
+        public BookStoresService(HttpClient httpClient, IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
-            _localStorageService = localStorageService;
 
             httpClient.BaseAddress = new Uri(_appSettings.BookStoresBaseAddress);
             httpClient.DefaultRequestHeaders.Add("User-Agent", "BlazorServer");
@@ -47,22 +42,20 @@ namespace BlazorServerApp.Services
         public async Task<List<T>> GetAllAsync(string requestUri)
         {
             var requestMessage = new HttpRequestMessage(HttpMethod.Get, requestUri);
+<<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Services/BookStoresService.cs
 
             var token = await _localStorageService.GetItemAsync<string>("accessToken");
             requestMessage.Headers.Authorization
                 = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
+=======
+>>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware:BlazorServerApp/BlazorApp/BlazorApp/Services/BookStoresService.cs
             var response = await _httpClient.SendAsync(requestMessage);
 
             var responseStatusCode = response.StatusCode;
+            var responseBody = await response.Content.ReadAsStringAsync();
 
-            if (responseStatusCode.ToString() == "OK")
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                return await Task.FromResult(JsonConvert.DeserializeObject<List<T>>(responseBody));
-            }
-            else
-                return null;
+            return await Task.FromResult(JsonConvert.DeserializeObject<List<T>>(responseBody));
         }
 
         public async Task<T> GetByIdAsync(string requestUri, int Id)
