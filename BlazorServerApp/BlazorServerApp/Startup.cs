@@ -17,10 +17,13 @@ using Blazored.LocalStorage;
 using BlazorServerApp.Services;
 <<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Startup.cs
 <<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Startup.cs
+<<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Startup.cs
 using BlazorServerApp.Handlers;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+=======
+>>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware:BlazorServerApp/BlazorApp/BlazorApp/Startup.cs
 =======
 >>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware:BlazorServerApp/BlazorApp/BlazorApp/Startup.cs
 =======
@@ -55,10 +58,15 @@ namespace BlazorServerApp
 
 <<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Startup.cs
 <<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Startup.cs
+<<<<<<< HEAD:BlazorServerApp/BlazorServerApp/Startup.cs
             services.AddHttpClient<IBookStoresService<Author>, BookStoresService<Author>>()
                     .AddHttpMessageHandler<ValidateHeaderHandler>();
             services.AddHttpClient<IBookStoresService<Publisher>, BookStoresService<Publisher>>()
                     .AddHttpMessageHandler<ValidateHeaderHandler>();
+=======
+            services.AddHttpClient<IBookStoresService<Author>, BookStoresService<Author>>();
+            services.AddHttpClient<IBookStoresService<Publisher>, BookStoresService<Publisher>>();
+>>>>>>> parent of bec9102... Sending JWT and Building a Outgoing Request Middleware:BlazorServerApp/BlazorApp/BlazorApp/Startup.cs
 =======
             services.AddHttpClient<IBookStoresService<Author>, BookStoresService<Author>>();
             services.AddHttpClient<IBookStoresService<Publisher>, BookStoresService<Publisher>>();
